@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Labubu Collection</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #d9c7ff; /* lavender */
+            overflow: hidden;
+        }
+
+        .float-img, .float-text {
+            position: absolute;
+            user-select: none;
+            cursor: grab;
+        }
+
+        .float-img {
+            width: 240px;
+            border-radius: 20px;
+            border: 6px solid #c2aef5;
+            animation: float linear infinite;
+        }
+
+        .float-text {
+            font-size: 48px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #fff;
+            text-shadow: 0 0 10px #c2aef5;
+            border: 4px solid #c2aef5;
+            border-radius: 20px;
+            padding: 20px;
+            animation: float linear infinite;
+        }
+
+        .dragging {
+            animation-play-state: paused !important;
+            cursor: grabbing;
+            z-index: 9999;
+            animation: glowPulse 1s infinite alternate;
+            box-shadow: 0 0 10px 3px #f8f0ff, 0 0 25px 10px #e5d3ff;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 10px 3px #f8f0ff; }
+            50% { box-shadow: 0 0 25px 10px #e5d3ff; }
+            100% { box-shadow: 0 0 10px 3px #f8f0ff; }
+        }
+
+        /* Image float animations */
+        .img1 { animation-duration: 18s; animation-name: float1; top: 10%; left: 10%; }
+        .img2 { animation-duration: 22s; animation-name: float2; top: 40%; left: 70%; }
+        .img3 { animation-duration: 20s; animation-name: float3; top: 65%; left: 20%; }
+        .img4 { animation-duration: 26s; animation-name: float4; top: 25%; left: 50%; }
+
+        /* Text float animation */
+        .title { animation-duration: 24s; animation-name: floatText; top: 5%; left: 30%; }
+
+        @keyframes float1 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(40px, -60px) rotate(6deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+
+        @keyframes float2 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(-60px, 50px) rotate(-5deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+
+        @keyframes float3 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(50px, 40px) rotate(4deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+
+        @keyframes float4 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(-40px, -40px) rotate(8deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+
+        @keyframes floatText {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(60px, -40px) rotate(3deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Images -->
+    <img class="float-img img1" src="https://i.postimg.cc/yNdHJy5w/IMG-0153.jpg" alt="">
+    <img class="float-img img2" src="https://i.postimg.cc/yNdHJy52/IMG-0154.jpg" alt="">
+    <img class="float-img img3" src="https://i.postimg.cc/yNdHJy5M/IMG-0155.jpg" alt="">
+    <img class="float-img img4" src="https://i.postimg.cc/DzZTWPDj/IMG-0156.jpg" alt="">
+
+    <!-- Floating Text -->
+    <div class="float-text title">My Labubu Collection</div>
+
+    <script>
+        const draggableElements = document.querySelectorAll('.float-img, .float-text');
+
+        draggableElements.forEach(el => {
+            let offsetX, offsetY;
+
+            const startDrag = (e) => {
+                el.classList.add('dragging');
+
+                const rect = el.getBoundingClientRect();
+                el.style.left = rect.left + "px";
+                el.style.top = rect.top + "px";
+                el.style.transform = "none";
+
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+
+                window.addEventListener('mousemove', drag);
+                window.addEventListener('mouseup', endDrag);
+            };
+
+            const drag = (e) => {
+                el.style.left = (e.clientX - offsetX) + 'px';
+                el.style.top = (e.clientY - offsetY) + 'px';
+            };
+
+            const endDrag = () => {
+                el.classList.remove('dragging');
+
+                // Capture current position
+                const rect = el.getBoundingClientRect();
+                const parentRect = document.body.getBoundingClientRect();
+                const left = rect.left - parentRect.left;
+                const top = rect.top - parentRect.top;
+
+                // Apply absolute left/top to stay in place
+                el.style.left = left + "px";
+                el.style.top = top + "px";
+
+                // Restart floating animation from this new position
+                el.style.animation = "none";      // reset
+                void el.offsetWidth;               // force reflow
+
+                // Assign the correct animation
+                if (el.classList.contains('title')) el.style.animation = "floatText linear infinite 24s";
+                else if (el.classList.contains('img1')) el.style.animation = "float1 linear infinite 18s";
+                else if (el.classList.contains('img2')) el.style.animation = "float2 linear infinite 22s";
+                else if (el.classList.contains('img3')) el.style.animation = "float3 linear infinite 20s";
+                else el.style.animation = "float4 linear infinite 26s";
+
+                window.removeEventListener('mousemove', drag);
+                window.removeEventListener('mouseup', endDrag);
+            };
+
+            el.addEventListener('mousedown', startDrag);
+        });
+    </script>
+</body>
+</html>
+
