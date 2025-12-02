@@ -9,11 +9,15 @@
         body {
             margin: 0;
             padding: 0;
-            background: #d9c7ff; /* lavender */
+            background: #d9c7ff;
             overflow: hidden;
         }
 
-        .float-img, .float-text {
+        .img-wrapper {
+            position: absolute;
+        }
+
+        .float-img, .float-text, .floating-star {
             position: absolute;
             user-select: none;
             cursor: grab;
@@ -26,38 +30,80 @@
             animation: float linear infinite;
         }
 
+        /* Tiny Open Button */
+        .open-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 16px;
+            height: 16px;
+            background: #ffffffcc;
+            border: 2px solid #c2aef5;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 99999;
+        }
+        .open-btn:hover {
+            background: #ffffff;
+        }
+
+        /* Light Green Title Text */
         .float-text {
             font-size: 48px;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            color: #fff;
-            text-shadow: 0 0 10px #c2aef5;
+            color: #c9ffca;
+            text-shadow: 0 0 10px #8aff9a;
             border: 4px solid #c2aef5;
             border-radius: 20px;
             padding: 20px;
             animation: float linear infinite;
         }
 
+        /* ⭐ Floating Stars */
+        .floating-star {
+            font-size: 50px;
+            color: #fff6aa;
+            text-shadow: 0 0 12px #ffe27a, 0 0 25px #ffd86a;
+            animation: starFloat linear infinite;
+        }
+
+        .star1 { top: 20%; left: 15%; animation-duration: 16s; animation-name: starFloat1; }
+        .star2 { top: 55%; left: 60%; animation-duration: 20s; animation-name: starFloat2; }
+        .star3 { top: 30%; left: 80%; animation-duration: 18s; animation-name: starFloat3; }
+        .star4 { top: 70%; left: 30%; animation-duration: 22s; animation-name: starFloat4; }
+
+        @keyframes starFloat1 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(40px, -50px) rotate(10deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+        @keyframes starFloat2 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(-50px, 40px) rotate(-8deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+        @keyframes starFloat3 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(60px, 20px) rotate(6deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+        @keyframes starFloat4 {
+            0% { transform: translate(0,0) rotate(0); }
+            50% { transform: translate(-40px, 60px) rotate(12deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+
         .dragging {
             animation-play-state: paused !important;
             cursor: grabbing;
             z-index: 9999;
-            animation: glowPulse 1s infinite alternate;
-            box-shadow: 0 0 10px 3px #f8f0ff, 0 0 25px 10px #e5d3ff;
         }
 
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 10px 3px #f8f0ff; }
-            50% { box-shadow: 0 0 25px 10px #e5d3ff; }
-            100% { box-shadow: 0 0 10px 3px #f8f0ff; }
-        }
-
-        /* Image float animations */
+        /* Original float keyframes */
         .img1 { animation-duration: 18s; animation-name: float1; top: 10%; left: 10%; }
         .img2 { animation-duration: 22s; animation-name: float2; top: 40%; left: 70%; }
         .img3 { animation-duration: 20s; animation-name: float3; top: 65%; left: 20%; }
         .img4 { animation-duration: 26s; animation-name: float4; top: 25%; left: 50%; }
-
-        /* Text float animation */
         .title { animation-duration: 24s; animation-name: floatText; top: 5%; left: 30%; }
 
         @keyframes float1 {
@@ -65,50 +111,98 @@
             50% { transform: translate(40px, -60px) rotate(6deg); }
             100% { transform: translate(0,0) rotate(0); }
         }
-
         @keyframes float2 {
             0% { transform: translate(0,0) rotate(0); }
             50% { transform: translate(-60px, 50px) rotate(-5deg); }
             100% { transform: translate(0,0) rotate(0); }
         }
-
         @keyframes float3 {
             0% { transform: translate(0,0) rotate(0); }
             50% { transform: translate(50px, 40px) rotate(4deg); }
             100% { transform: translate(0,0) rotate(0); }
         }
-
         @keyframes float4 {
             0% { transform: translate(0,0) rotate(0); }
             50% { transform: translate(-40px, -40px) rotate(8deg); }
             100% { transform: translate(0,0) rotate(0); }
         }
-
         @keyframes floatText {
             0% { transform: translate(0,0) rotate(0); }
             50% { transform: translate(60px, -40px) rotate(3deg); }
             100% { transform: translate(0,0) rotate(0); }
         }
+
+        /* 🟢 NEW: Wiggly Mouse-Following Text */
+        #mouseText {
+            position: absolute;
+            font-size: 42px;
+            font-family: 'Comic Sans MS', cursive;
+            pointer-events: none;
+            color: #ffffff;
+            text-shadow: 0 0 8px #b1ffd1;
+            animation: wiggle 0.4s infinite alternate ease-in-out;
+        }
+
+        @keyframes wiggle {
+            0% { transform: translate(-10px, -5px) rotate(-3deg); }
+            100% { transform: translate(10px, 5px) rotate(3deg); }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Images -->
-    <img class="float-img img1" src="https://i.postimg.cc/yNdHJy5w/IMG-0153.jpg" alt="">
-    <img class="float-img img2" src="https://i.postimg.cc/yNdHJy52/IMG-0154.jpg" alt="">
-    <img class="float-img img3" src="https://i.postimg.cc/yNdHJy5M/IMG-0155.jpg" alt="">
-    <img class="float-img img4" src="https://i.postimg.cc/DzZTWPDj/IMG-0156.jpg" alt="">
+    <!-- ⭐ FOUR FLOATING STARS -->
+    <div class="floating-star star1">★</div>
+    <div class="floating-star star2">★</div>
+    <div class="floating-star star3">★</div>
+    <div class="floating-star star4">★</div>
+
+    <!-- 🟢 NEW: Wiggly Mouse-Follow Text -->
+    <div id="mouseText">Labubus Are Cute</div>
+
+    <!-- Images with Buttons -->
+    <div class="img-wrapper img1">
+        <img class="float-img" src="https://i.postimg.cc/yNdHJy5w/IMG-0153.jpg">
+        <div class="open-btn"></div>
+    </div>
+
+    <div class="img-wrapper img2">
+        <img class="float-img" src="https://i.postimg.cc/yNdHJy52/IMG-0154.jpg">
+        <div class="open-btn"></div>
+    </div>
+
+    <div class="img-wrapper img3">
+        <img class="float-img" src="https://i.postimg.cc/yNdHJy5M/IMG-0155.jpg">
+        <div class="open-btn"></div>
+    </div>
+
+    <div class="img-wrapper img4">
+        <img class="float-img" src="https://i.postimg.cc/DzZTWPDj/IMG-0156.jpg">
+        <div class="open-btn"></div>
+    </div>
 
     <!-- Floating Text -->
     <div class="float-text title">My Labubu Collection</div>
 
     <script>
-        const draggableElements = document.querySelectorAll('.float-img, .float-text');
+        /* Open image button */
+        document.querySelectorAll('.open-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const img = btn.parentElement.querySelector('img');
+                window.open(img.src, "_blank");
+            });
+        });
+
+        /* Dragging system */
+        const draggableElements = document.querySelectorAll('.img-wrapper, .float-text, .floating-star');
 
         draggableElements.forEach(el => {
             let offsetX, offsetY;
 
             const startDrag = (e) => {
+                if (e.target.classList.contains("open-btn")) return;
+
                 el.classList.add('dragging');
 
                 const rect = el.getBoundingClientRect();
@@ -131,22 +225,18 @@
             const endDrag = () => {
                 el.classList.remove('dragging');
 
-                // Capture current position
                 const rect = el.getBoundingClientRect();
-                const parentRect = document.body.getBoundingClientRect();
-                const left = rect.left - parentRect.left;
-                const top = rect.top - parentRect.top;
+                el.style.left = rect.left + "px";
+                el.style.top = rect.top + "px";
 
-                // Apply absolute left/top to stay in place
-                el.style.left = left + "px";
-                el.style.top = top + "px";
+                el.style.animation = "none";
+                void el.offsetWidth;
 
-                // Restart floating animation from this new position
-                el.style.animation = "none";      // reset
-                void el.offsetWidth;               // force reflow
-
-                // Assign the correct animation
-                if (el.classList.contains('title')) el.style.animation = "floatText linear infinite 24s";
+                if (el.classList.contains('star1')) el.style.animation = "starFloat1 linear infinite 16s";
+                else if (el.classList.contains('star2')) el.style.animation = "starFloat2 linear infinite 20s";
+                else if (el.classList.contains('star3')) el.style.animation = "starFloat3 linear infinite 18s";
+                else if (el.classList.contains('star4')) el.style.animation = "starFloat4 linear infinite 22s";
+                else if (el.classList.contains('title')) el.style.animation = "floatText linear infinite 24s";
                 else if (el.classList.contains('img1')) el.style.animation = "float1 linear infinite 18s";
                 else if (el.classList.contains('img2')) el.style.animation = "float2 linear infinite 22s";
                 else if (el.classList.contains('img3')) el.style.animation = "float3 linear infinite 20s";
@@ -158,7 +248,14 @@
 
             el.addEventListener('mousedown', startDrag);
         });
+
+        /* 🟢 Mouse-follow wiggly text system */
+        const mouseText = document.getElementById("mouseText");
+
+        document.addEventListener("mousemove", (e) => {
+            mouseText.style.left = e.pageX + 20 + "px";
+            mouseText.style.top = e.pageY + 20 + "px";
+        });
     </script>
 </body>
 </html>
-
